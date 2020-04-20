@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.shalousun</groupId>
+    <groupId>com.github.calmking</groupId>
     <artifactId>smart-doc-maven-plugin</artifactId>
-    <version>1.0.6</version>
+    <version>self-1.0.6</version>
     <packaging>maven-plugin</packaging>
 
     <name>smart-doc-maven-plugin</name>
