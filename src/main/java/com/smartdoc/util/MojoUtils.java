@@ -78,6 +78,7 @@ public class MojoUtils {
     public static ApiConfig buildConfig(File configFile, String projectName, MavenProject project, Log log) throws MojoExecutionException {
         try {
             ClassLoader classLoader = ClassLoaderUtil.getRuntimeClassLoader(project);
+
             String data = FileUtil.getFileContent(new FileInputStream(configFile));
             ApiConfig apiConfig = GSON.fromJson(data, ApiConfig.class);
             List<ApiDataDictionary> apiDataDictionaries = apiConfig.getDataDictionaries();
