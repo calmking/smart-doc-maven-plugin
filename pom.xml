@@ -73,7 +73,7 @@
         <dependency>
             <groupId>com.github.calmking</groupId>
             <artifactId>smart-doc</artifactId>
-            <version>1.8.5-SNAPSHOT</version>
+            <version>1.8.6-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <build>
