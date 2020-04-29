@@ -129,6 +129,7 @@ public class MojoUtils {
 
     /**
      * addSourcePath
+     *
      * @param project
      * @param apiConfig
      * @param sourceCodePaths
@@ -144,6 +145,7 @@ public class MojoUtils {
         sourceCodePaths.toArray(codePaths);
         apiConfig.setSourceCodePaths(codePaths);
     }
+
     /**
      * get project sourceCode
      *
@@ -156,6 +158,7 @@ public class MojoUtils {
         for (File f : fs) {
             if (f.isDirectory()) {
                 if (f.getPath().endsWith(GlobalConstants.SOURCE_CODE_PATH) ||
+                        f.getPath().endsWith(GlobalConstants.SOURCE_CODE_TEST_PATH) ||
                         f.getPath().endsWith(GlobalConstants.SOURCE_CODE_PATH_REVERSE)) {
                     path.add(f.getPath());
                 }
@@ -166,6 +169,7 @@ public class MojoUtils {
 
     /**
      * get RootParentPath
+     *
      * @param project
      * @return
      */

@@ -32,6 +32,10 @@ public interface GlobalConstants {
     String DEFAULT_CONFIG = "./src/main/resources/default.json";
 
     String SOURCE_CODE_PATH = "/src/main/java";
+    /**
+     * 增加 testSource 生成
+     */
+    String SOURCE_CODE_TEST_PATH = "/src/test/java";
 
     String SOURCE_CODE_PATH_REVERSE = "\\src\\main\\java";
 }
