@@ -22,29 +22,25 @@
  */
 package com.smartdoc.mojo;
 
-
-import com.power.doc.builder.HtmlApiDocBuilder;
+import com.power.doc.builder.rpc.RpcMarkdownBuilder;
 import com.power.doc.model.ApiConfig;
 import com.thoughtworks.qdox.JavaProjectBuilder;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-
 /**
- * @author xingzi 2019/12/06 14:50
+ * @author yu 2020/5/26.
  */
 @Execute(phase = LifecyclePhase.COMPILE)
-@Mojo(name = "html", requiresDependencyResolution = ResolutionScope.COMPILE)
-public class HtmlMojo extends BaseDocsGeneratorMojo {
+@Mojo(name = "rpc-markdown", requiresDependencyResolution = ResolutionScope.COMPILE)
+public class RpcMarkdownMojo extends BaseDocsGeneratorMojo {
 
     @Override
-    public void executeMojo(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder) throws MojoExecutionException, MojoFailureException {
+    public void executeMojo(ApiConfig apiConfig, JavaProjectBuilder javaProjectBuilder) {
         try {
-            HtmlApiDocBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
+            RpcMarkdownBuilder.buildApiDoc(apiConfig, javaProjectBuilder);
         } catch (Exception e) {
             getLog().error(e);
         }

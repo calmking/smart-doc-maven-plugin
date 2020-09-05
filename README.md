@@ -1,6 +1,11 @@
-<h1 align="center">Smart-Doc Maven Plugin</a></h1>
+<h1 align="center">Smart-Doc Maven Plugin</h1>
 
-[中文文档](https://github.com/shalousun/smart-doc-maven-plugin/blob/master/README_CN.md)
+![maven](https://img.shields.io/maven-central/v/com.github.shalousun/smart-doc-maven-plugin)
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+![number of issues closed](https://img.shields.io/github/issues-closed-raw/shalousun/smart-doc-maven-plugin)
+![closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/shalousun/smart-doc-maven-plugin)
+![java version](https://img.shields.io/badge/JAVA-1.8+-green.svg)
+[![chinese](https://img.shields.io/badge/chinese-中文文档-brightgreen)](https://github.com/shalousun/smart-doc-maven-plugin/blob/master/README_CN.md)
 
 ## Introduce
 smart-doc-maven-plugin is a `maven` plugin developed by the smart-doc official team. 
@@ -20,13 +25,22 @@ smart-doc-maven-plugin will also make smart-doc's ability to generate API docume
     <artifactId>smart-doc-maven-plugin</artifactId>
     <version>[latest version]</version>
     <configuration>
+        <!--skip option is used to disable plugin in child module-->
+        <!--<skip>true</skip>-->
         <!--Specify the configuration file used to generate the document-->
         <configFile>./src/main/resources/smart-doc.json</configFile>
         <!--smart-doc implements automatic analysis of the dependency tree to load the source code of third-party dependencies. If some framework dependency libraries are not loaded, an error is reported, then use excludes to exclude-->
         <excludes>
-            <!-The format is: groupId: artifactId; refer to the following->
+            <!--The format is: groupId: artifactId; refer to the following-->
+            <!--since 1.0.7 version you can also use regular matching to exclude, such as: poi. *-->
             <exclude>com.google.guava:guava</exclude>
         </excludes>
+        <!--Since version 1.0.8, the plugin provides includes support-->
+        <!--smart-doc can automatically analyze the dependency tree to load all dependent source code. In principle, it will affect the efficiency of document construction, so you can use includes to let the plugin load the components you configure.-->
+        <includes>
+            <!--The format is: groupId: artifactId; refer to the following-->
+            <include>com.alibaba:fastjson</include>
+        </includes>
     </configuration>
     <executions>
         <execution>
@@ -52,7 +66,7 @@ The configuration contents are as follows.
    "outPath": "/src/main/resources" //Set the api document output path.
 }
 ```
-Only three configuration items are required to use the smart-doc-maven-plugin to generate API documentation. In fact, only outPath must be configured.
+Only three configurations items are needed to generate API documentation using smart-doc-maven-plugin. In fact, only outPath must be configured.
 
 **Detailed configuration content:**
 
@@ -68,6 +82,17 @@ When you need to use smart-doc to generate more API document information, you ca
   "md5EncryptedHtmlName": false, // only used if each controller generates an html file
   "projectName": "smart-doc", // Configure your own project name
   "skipTransientField": true, // Not currently implemented
+  "requestFieldToUnderline":true, //convert request field to underline
+  "responseFieldToUnderline":true,//convert response field to underline
+  "sortByTitle":false,//Sort by interface title, the default value is false
+  "inlineEnum":true,// Set to true to display enumeration details in the parameter table
+  "recursionLimit":7,// Set the number of recursive executions to avoid stack overflow, the default is 7
+  "allInOneDocFileName":"index.html",//Customize the output document name
+  "requestExample":"true",//Whether to display the request example in the document, the default value is true.
+  "responseExample":"true",//Whether to display the response example in the document, the default is true.
+  "ignoreRequestParams":[ //The request parameter object will be discarded when generating the document.@since 1.9.2
+     "org.springframework.ui.ModelMap"
+  ],
   "dataDictionaries": [// Configure the data dictionary, no need to set
     {
       "title": "Order Status", // The name of the data dictionary
@@ -103,6 +128,15 @@ When you need to use smart-doc to generate more API document information, you ca
         "className": "org.springframework.data.domain.Pageable",
         "replacementClassName": "com.power.doc.model.PageRequestDto" //Use custom PageRequestDto instead of JPA Pageable for document rendering.
   }],
+  "rpcApiDependencies":[{ // Your Apache Dubbo api interface module dependency description.
+        "artifactId":"SpringBoot2-Dubbo-Api",
+        "groupId":"com.demo",
+        "version":"1.0.0"
+  }],
+  "apiConstants": [{//Configure your own constant class, smart-doc automatically replaces with a specific value when parsing to a constant
+        "constantsClassName": "com.power.doc.constants.RequestParamConstant"
+   }],
+  "rpcConsumerConfig": "src/main/resources/consumer-example.conf",//dubbo consumer config example
   "requestHeaders": [// Set global request headers, no need to set
     {
       "name": "token",
@@ -120,13 +154,23 @@ So the project configuration can also refer to the introduction of smart-doc.
 #### Run plugin with maven command
 ```
 // Generate html
-mvn -Dfile.encoding = UTF-8 smart-doc: html
+mvn -Dfile.encoding = UTF-8 smart-doc:html
 // Generate markdown
-mvn -Dfile.encoding = UTF-8 smart-doc: markdown
+mvn -Dfile.encoding = UTF-8 smart-doc:markdown
 // Generate adoc
-mvn -Dfile.encoding = UTF-8 smart-doc: adoc
+mvn -Dfile.encoding = UTF-8 smart-doc:adoc
 // Generate postman collection
-mvn -Dfile.encoding = UTF-8 smart-doc: postman
+mvn -Dfile.encoding = UTF-8 smart-doc:postman
+// Generate Open Api 3.0+,Since 1.1.5
+mvn -Dfile.encoding = UTF-8 smart-doc:openapi
+
+// For Apache Dubbo Rpc
+// Generate html
+mvn -Dfile.encoding = UTF-8 smart-doc:rpc-html
+// Generate markdown
+mvn -Dfile.encoding = UTF-8 smart-doc:rpc-markdown
+// Generate adoc
+mvn -Dfile.encoding = UTF-8 smart-doc:rpc-adoc
 ```
 **Note:** Under the window system, if you use the maven command line to perform document generation, 
 non-English characters may be garbled, so you need to specify `-Dfile.encoding = UTF-8` during execution.

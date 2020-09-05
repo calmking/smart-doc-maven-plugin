@@ -1,7 +1,7 @@
 /*
  * smart-doc https://github.com/shalousun/smart-doc
  *
- * Copyright (C) 2019-2020 smart-doc
+ * Copyright (C) 2018-2020 smart-doc
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -22,6 +22,8 @@
  */
 package com.smartdoc.util;
 
+import com.power.common.util.StringUtil;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +35,9 @@ public class FileUtil {
     private static Pattern pattern = Pattern.compile(regex);
 
     public static boolean isAbsPath(String path) {
+        if (StringUtil.isEmpty(path)) {
+            return false;
+        }
         Matcher matcher = pattern.matcher(path);
         if (matcher.find() || path.startsWith("/")) {
             return true;
